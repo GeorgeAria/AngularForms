@@ -1,0 +1,15 @@
+/*
+To get CSS to ignore the form itself, we use ":not(form)"
+
+To prevent the red outline from showing every time, we use ".ng-touched"
+so that it only shows after the value has been "touched".
+
+Rather than using this complex name, we can simply use a custom class, like ".field-error"
+*/
+.ng-invalid:not(form).ng-touched{
+    border: 1px solid red;
+}
+
+.field-error{
+    border: 1px solid red;
+}

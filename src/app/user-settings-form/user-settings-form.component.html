@@ -1,0 +1,155 @@
+<!--The class "container" will give the form some margins and pull it away from the edge of the browser.-->
+
+<div class = "container">
+    <h2>User Settings</h2>
+<!--ngForm allows us to access all of the information that Angular has about the form.
+
+    ngSubmit can be used to call a function from the TypeScript file for this component.
+    NOTE: It MUST be enclosed in parenthesis for this to work.-->
+    <form #form = "ngForm" (ngSubmit) = "onSubmit(form)">
+
+<!--Forms are usually wrapped around a class called "form-group", which gives it the BootStrap styling.-->
+        <div class = "form-group">
+
+<!--The "name" in the "for" element of the label tag links up with the "name" in the "id" element of the input tag.-->
+            <label for="name">Name</label>
+
+<!--The "form-control" class gives the input tag BootStrap formatting.
+    The "placeholder" element is technically no longer needed in the input tag since we have a label now.
+
+    ngModel is used to keep track of the value of an HTML tag.
+    NOTE: You MUST have a name attribute and a value assigned to it to use ngModel.
+    In this case, the name for the "input" tag is assigned the value "name".
+
+    When ngModel is within a "banana-in-a-box, or [()], it can be used to perform two-way data binding.
+    In this case, the input HTML tag is use ngModel to get the name value from the userSettings object in the TypeScript file.
+    After the user enters a value, the name value in the userSettings object will change to that value.
+
+    The value "#nameField" is a template reference variable that, when assigned the string "ngModel", 
+    allows us to access certain properties of ngModel within this HTML tag.
+    "nameField" can be changed to another name if needed.
+    dirty: The value has been modified in some way.
+    pristine: The value has not been modified in any way.
+    touched: The value has been focused on and left (usually by selecting another value or tabbing away from it).
+    untouched: The value was not focused on and left.
+    valid: The value meets all requirements (e.g. meets min length or min value).
+    invalid: The value does not meet all requirements. 
+
+    The property "[class.field-error]" will give the class name "field-error" to the "input" HTML if the string value
+    it is given evaluates to true.
+    NOTE: "field-error" is a custom class reference in the CSS file.
+    In this case, it is true if the form has been submitted and if the "#nameField" template reference variable's invalid
+    property is true.
+
+    The property "(blur)" will be executed when this field loses focus (when we go into it and leave it).
+    It will execute the onBlur() method in the TypeScript component file and pass it the "nameField" value.
+    -->
+
+   
+            <input id="name" name="name" class="form-control" [(ngModel)] = "userSettings.name" 
+            required #nameField = "ngModel" [class.field-error] = "form.submitted && nameField.invalid"
+            (blur) = "onBlur(nameField)"/>
+
+<!--The "hidden" property has [] around it, meaning we will bind to it with values from something in our TypeScript file.
+    If the form has not been submitted or if the nameField is valid, the alert message will not appear to the user.-->
+            <div [hidden] = "!form.submitted || nameField.valid" class = "alert alert-danger">
+                Enter a name
+            </div>
+        </div>
+
+<!--The "form-group" class spaces out the checkbox.-->
+        <div class = "form-check form-group">
+            <input class = "form-check-input" type = "checkbox" id = "emailOffers" name = "emailOffers" [(ngModel)] = "userSettings.emailOffers">
+            <label class = "form-check-label" for = "emailOffers">
+                Email Special Offers
+            </label>
+        </div>
+
+        <p>User Interface Style<p>
+        <div class = "form-group">
+
+<!--The "form-check" class allows us to create a radio button.-->
+            <div class = "form-check">
+
+<!--For these radio buttons to work together, they must have the same "name" element value in the input class.
+    In this case, they must all have the name "interfaceStyle". -->
+                <input class = "form-check-label" type = "radio" name = "interfaceStyle" id = "lightInterface" value = "light" 
+                checked [(ngModel)] = "userSettings.interfaceStyle"> 
+                <label class = "form-check-label" for = "lightInterface">
+                    Light
+                </label>
+            </div>
+            <div class = "form-check">
+                <input class = "form-check-label" type = "radio" name = "interfaceStyle" id = "mediumInterface" value = "medium" 
+                [(ngModel)] = "userSettings.interfaceStyle">
+                <label class = "form-check-label" for = "mediumInterface">
+                    Medium
+                </label>
+            </div>
+            <div class = "form-check">
+                <input class = "form-check-label" type = "radio" name = "interfaceStyle" id = "darkInterface" value = "dark" 
+                [(ngModel)] = "userSettings.interfaceStyle">
+                <label class = "form-check-label" for = "darkInterface">
+                    Dark
+                </label>
+            </div>
+        </div>
+
+
+        <div class = "form-group">
+            <label for = "subscriptionType">
+                Subscription Type
+            </label>
+
+<!--The "form-control" class allows us to create a selector with various options to choose from a dropdown.-->
+            <select class = "form-control" id = "subscriptionType" name = "subscriptionType" [(ngModel)] = "userSettings.subscriptionType">
+<!--The "async" pipe will wait for the subscriptionTypes data to come in before displaying anything.
+    It is used when the array you reference for "ngFor" is an Observable.
+
+    This option select, unfortunately, does not work correctly.-->    
+                <option *ngFor = "let type of subscriptionTypes  | async">
+                    {{ type }}
+                </option>
+            </select>
+        </div>
+
+<!--"textarea" allows us to create a textarea field for the user to type in.-->
+        <div class = "form-group">
+            <label for = "notes">
+                Notes
+            </label>
+            <textarea id = "notes" name = "notes" class = "form-control" rows = "3" [(ngModel)] = "userSettings.notes"></textarea>
+        </div>
+<!--
+        <div class = "form-group">
+            <label for = "password">
+                Password
+            </label>
+
+    The input's type is set to "password" to make this a password field.
+
+            <input type = "password" id = "password" name = "password" class = "form-control" />
+        </div>
+    -->
+
+<!--
+        <div class = "form-group">
+            <label for = "testing">
+                Testing
+            </label>
+        
+
+    The input's type is set to "date" to make this a date field.
+            <input type = "date" id = "testing" name = "testing" class = "form-control" />
+        </div>
+-->    
+        <div [hidden] = "!postError" class = "alert alert-danger">
+            {{postErrorMessage}}
+        </div>
+        <button class = "btn btn-primary">Send</button>     
+    </form>
+<!---
+    form.value prints out all of the values of the HTML tags that the "ngModel" directive is assigned to.
+    userSettings prints out all of the values in the userSettings object in the TypeScript file.-->
+    {{userSettings | json}}
+</div>
