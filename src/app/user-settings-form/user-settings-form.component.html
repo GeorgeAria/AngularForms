@@ -57,6 +57,16 @@
             </div>
         </div>
 
+<!--This code uses a button from the ngx-bootstrap module that was imported in node_modules.-->
+        <pre class="card card-block card-header">{{singleModel}}</pre>
+        <button type="button" class="btn btn-primary"
+                [(ngModel)]="singleModel" btnCheckbox
+                btnCheckboxTrue="On" btnCheckboxFalse="Off" name = "singleModel">
+          {{singleModel}}
+        </button>
+
+        
+
 <!--The "form-group" class spaces out the checkbox.-->
         <div class = "form-check form-group">
             <input class = "form-check-input" type = "checkbox" id = "emailOffers" name = "emailOffers" [(ngModel)] = "userSettings.emailOffers">

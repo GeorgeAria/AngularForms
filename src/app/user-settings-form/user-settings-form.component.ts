@@ -33,6 +33,8 @@ export class UserSettingsFormComponent implements OnInit {
   postErrorMessage = '';
   subscriptionTypes: Observable<string[]>;
 
+  singleModel = "On";
+
   constructor(private dataService: DataService) { }
 
   onHttpError(errorResponse: any)
@@ -73,7 +75,7 @@ export class UserSettingsFormComponent implements OnInit {
   ngOnInit(): void 
   {
     this.subscriptionTypes = this.dataService.getSubscriptionTypes();
-    
+
     console.log("this is working");
   }
 
